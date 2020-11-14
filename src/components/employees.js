@@ -1,7 +1,7 @@
 import React from "react";
-import {TextField,Button,Container,Grid} from '@material-ui/core';
+import {TextField,Button,Container} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import  EnployeeTable from "./employees_data";
+import  EmployeeTable from "./employees_data";
 class Employee extends React.Component{
     constructor(props){
         super(props);
@@ -13,6 +13,7 @@ class Employee extends React.Component{
         this.onChangeHandler.bind(this.onChangeHandler);
         this.onEmployeeAdd.bind(this.onEmployeeAdd);
         this.onDeleteItem.bind(this.onDeleteItem);
+        this.onEditItem.bind(this.onEditItem);
     }
 
     onChangeHandler=(event)=>{
@@ -54,6 +55,18 @@ class Employee extends React.Component{
          }); 
       
       } 
+
+      onEditItem=(id,value)=>{
+
+
+        const employees = [...this.state.employees];
+
+        const update_index =employees.findIndex(item=>item.employeeId === id);
+        employees[update_index].employeeName=value;  
+        this.setState({employees:employees})
+      }
+
+
       
     render(){
         return(
@@ -71,7 +84,7 @@ class Employee extends React.Component{
                 <div>
                                 <Container maxWidth="md">
                                
-                                          < EnployeeTable employees_list={this.state.employees} click={this.onDeleteItem}/>
+                                          < EmployeeTable employees_list={this.state.employees} click={this.onDeleteItem} onEdit={this.onEditItem}/>
                                   
                                 
                                 </Container>
