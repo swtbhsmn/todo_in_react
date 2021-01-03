@@ -4,15 +4,14 @@ import AddIcon from '@material-ui/icons/Add';
 import TaskTable from "./task_data";
 import Modal from '@material-ui/core/Modal';
 import { withStyles } from '@material-ui/core/styles';
-
+import { Typography ,Link,Box} from "@material-ui/core";
 const useStyles = (theme) => ({
   paper: {
-      position: 'absolute',
-      width: 400,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3)
+    position: 'absolute',
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #FFF',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3)
   },
 });
 
@@ -65,19 +64,33 @@ class Task extends React.Component {
   }
 
   onDeleteItem = (key) => {
-    this.setState({openModal:true});
+    this.setState({ openModal: true });
     let employees = [...this.state.employees];
     let completedTask = [...this.state.task_completed];
-    completedTask.push(employees[key-1]);
+    let today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+
+    let time_format = `${h}:${m}:${s}`;
+
+    let task_update = {
+      task_id:employees[key-1].employeeId,
+      task_name:employees[key-1].employeeName,
+      time_completed:time_format,
+    }
+
+    completedTask.push(task_update);
     let updateList = employees.filter(item => item.employeeId !== key);
 
     this.setState({
       employees: updateList,
       task_completed: completedTask
-    },()=>{
-      if(this.state.employees.length===0){
-      
-        this.handleOpen();    }
+    }, () => {
+      if (this.state.employees.length === 0) {
+
+        this.handleOpen();
+      }
     });
 
 
@@ -95,40 +108,76 @@ class Task extends React.Component {
 
   handleOpen = () => {
     this.setState({ open: true })
-};
+  };
 
-handleClose = () => {
+  handleClose = () => {
     this.setState({ open: false })
-};
+  };
 
   render() {
-    const {classes} =this.props;
+    const { classes } = this.props;
+
+    const Footer=()=>{
+    
+        return (
+            <Typography variant="body2" color="textPrimary" align="center">
+                {'Copyright © '}
+                <Link color="primary" href="https://www.linkedin.com/in/swetabhsuman/">
+                    SwetabhSuman
+          </Link>{' '}
+                {new Date().getFullYear()}
+                {'.'}
+            </Typography>
+        );
+   
+    }
     const body = (
       <div className={classes.paper}>
-          <h2 id="simple-modal-title">TaskBar</h2>
-          <p id="simple-modal-description">
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </p>
+        <h2 id="simple-modal-title" style={{ color: "#32a848" }}>Successfully Task Completed!</h2>
+
+      <table>
+        <tbody>
+          <tr>
+          <th style={{padding:10}}>Task Id</th>
+            <th style={{padding:10}}>Task Name</th>
+            <th style={{padding:10}}>Task End Time</th>
+            <th style={{padding:10}}>Task Completed</th>
+          </tr>
+          {this.state.task_completed.map((item, key) => {
+          return (
+            <tr key={key} >
+              <td className="text-center"> {item.task_id}</td>
+              <td className="text-center"> {item.task_name}</td>
+              <td className="text-center"> {item.time_completed}</td>
+              <td className="text-center"> <i className="material-icons" style={{ color: "#32a848" }}>done</i></td>
+               
+            </tr>
+          );
+        })}
+        </tbody>
+      </table>
+
+       
 
       </div>
-  );
+    );
     return (
       <div >
-               <Modal
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                    className="modal-body"
-                >
-                    {body}
-                </Modal>
+        <Modal
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          className="modal-body"
+        >
+          {body}
+        </Modal>
         <div className="taskDetails">
           <div className="active">
-            <p>ActiveTask</p>
+            <p>Active Task</p>
             <p>{this.state.employees.length}</p>
           </div>
-          <div className="completed"><p>CompletedTask</p>
+          <div className="completed"><p>Completed Task</p>
             <p>  {this.state.task_completed.length}</p>
           </div>
 
@@ -152,7 +201,10 @@ handleClose = () => {
 
           </Container>
         </div>
-
+      
+        <Box mt={5} className="footer">
+                        <Footer />
+        </Box>
       </div>
     );
   }
