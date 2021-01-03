@@ -51,7 +51,7 @@ class Task extends React.Component {
     if (employee !== '') {
       const userInput = {
 
-        employeeId: this.state.employees.length,
+        employeeId: this.state.employees.length+1,
 
         employeeName: employee
       };
@@ -201,8 +201,8 @@ class Task extends React.Component {
             autoFocus />
           <Button onClick={this.onEmployeeAdd} color="primary"><AddIcon /></Button>
         </div>
-        <div>
-          <Container maxWidth="md">
+        <div className="table-container">
+          <Container maxWidth="md" >
 
             < TaskTable employees_list={this.state.employees} click={this.onDeleteItem} onEdit={this.onEditItem} />
 

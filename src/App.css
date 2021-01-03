@@ -64,3 +64,8 @@ text-align: center;
 width:100%;
 
 }
+
+.table-container{
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
