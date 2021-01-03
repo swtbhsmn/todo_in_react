@@ -41,8 +41,13 @@ class Task extends React.Component {
   }
 
   onEmployeeAdd = () => {
-    const { employee } = this.state;
-
+   
+    const { employee ,employees} = this.state;
+    if(employees.length===0){
+      this.setState({
+        task_completed:[]
+      })
+    }
     if (employee !== '') {
       const userInput = {
 
@@ -90,6 +95,7 @@ class Task extends React.Component {
       if (this.state.employees.length === 0) {
 
         this.handleOpen();
+      
       }
     });
 
