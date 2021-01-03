@@ -51,7 +51,7 @@ class Task extends React.Component {
     if (employee !== '') {
       const userInput = {
 
-        employeeId: this.state.employees.length + 1,
+        employeeId: this.state.employees.length,
 
         employeeName: employee
       };
@@ -69,7 +69,7 @@ class Task extends React.Component {
   }
 
   onDeleteItem = (key) => {
-    this.setState({ openModal: true });
+   
     let employees = [...this.state.employees];
     let completedTask = [...this.state.task_completed];
     let today = new Date();
@@ -78,14 +78,16 @@ class Task extends React.Component {
     let s = today.getSeconds();
 
     let time_format = `${h}:${m}:${s}`;
+    let update_index = employees.findIndex(item => item.employeeId === key);
 
     let task_update = {
-      task_id:employees[key-1].employeeId,
-      task_name:employees[key-1].employeeName,
+      task_id:this.state.employees[update_index].employeeId,
+      task_name:this.state.employees[update_index].employeeName,
       time_completed:time_format,
     }
 
     completedTask.push(task_update);
+
     let updateList = employees.filter(item => item.employeeId !== key);
 
     this.setState({
