@@ -25,7 +25,7 @@ const useStyles = (theme) => ({
   }
 });
 
-class EmployeeTable extends React.Component {
+class TaskTable extends React.Component {
 
   constructor(props) {
     super(props);
@@ -113,10 +113,10 @@ class EmployeeTable extends React.Component {
           <Table style={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Employee Id</TableCell>
-                <TableCell align="center">Employee Name</TableCell>
-                <TableCell align="center">Edit</TableCell>
-                <TableCell align="center">Delete</TableCell>
+                <TableCell align="center">Task Id</TableCell>
+                <TableCell align="center">Task Name</TableCell>
+                <TableCell align="center">Task Edit</TableCell>
+                <TableCell align="center">Task Delete</TableCell>
 
               </TableRow>
             </TableHead>
@@ -154,4 +154,4 @@ class EmployeeTable extends React.Component {
     );
   }
 }
-export default withStyles(useStyles)(EmployeeTable)
+export default withStyles(useStyles)(TaskTable)
