@@ -34,13 +34,18 @@ class TaskTable extends React.Component {
       employees: props.employees_list,
       edit_modal: false,
       edit_name: "",
-      employee_id: ""
+      employee_id: "",
+      check_value:0,
+      _previous_id:0,
+      checkbox:false
     }
 
     this.onToggleButtonEdit.bind(this.onToggleButtonEdit);
     this.onSaveButton.bind(this.onSaveButton);
     this.onChangeHandler.bind(this.onChangeHandler);
     this.onCloseModal.bind(this.onCloseModal);
+    this.onCheckHandler.bind(this.onCheckHandler);
+
   }
 
   onToggleButtonEdit = (id, name) => {
@@ -57,6 +62,11 @@ class TaskTable extends React.Component {
 
   onChangeHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+  onCheckHandler = (item)=>{
+
+    this.props.clickMark(1,item);
+    
   }
   render() {
     const { classes } = this.props;
@@ -165,7 +175,7 @@ class TaskTable extends React.Component {
                     <TableCell align="center">
                     <FormControlLabel
                             control={<Checkbox color="primary" />}
-                            onClick={() => this.props.clickMark(1,item.employeeId)}
+                            onClick={() => this.onCheckHandler(item.employeeId)}
                         />
                         </TableCell>
                   </TableRow>

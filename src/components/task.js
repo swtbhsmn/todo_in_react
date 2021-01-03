@@ -26,7 +26,7 @@ class Task extends React.Component {
       open: false,
       complete: 0,
       active: 0,
-      task_end:false,
+      task_end: false,
     }
 
     this.onChangeHandler.bind(this.onChangeHandler);
@@ -101,14 +101,14 @@ class Task extends React.Component {
       employees: updateList,
       task_deleted: deletedTask,
       active: active_task
-    },()=>{
-      if ((this.state.active=== this.state.complete)&&this.state.task_end===true) {
+    }, () => {
+      if ((this.state.active === this.state.complete) && this.state.task_end === true) {
         this.handleOpen()
-    
+
       }
     });
 
-  
+
 
   }
 
@@ -122,7 +122,7 @@ class Task extends React.Component {
   }
 
   markCompleted = (x, key) => {
-    
+
     let employees = [...this.state.employees];
     let completedTask = [...this.state.task_completed];
     let today = new Date();
@@ -138,7 +138,7 @@ class Task extends React.Component {
       task_name: this.state.employees[update_index].employeeName,
       time_completed: time_format,
     }
-
+    
     completedTask.push(task_update);
     console.log(completedTask);
 
@@ -147,7 +147,7 @@ class Task extends React.Component {
     this.setState({
       complete: complete,
       task_completed: completedTask,
-      task_end:true
+      task_end: true
     }, () => {
       if (this.state.employees.length === this.state.complete) {
         this.handleOpen()
@@ -183,7 +183,7 @@ class Task extends React.Component {
     }
     const body = (
       <div className={classes.paper}>
-        <h2 id="simple-modal-title" style={{ color: "#32a848" }}>Successfully Task Completed!</h2>
+        <h2 id="simple-modal-title" style={{ color: "#32a848" }}>All Task Successfully Completed!</h2>
 
         <table>
           <tbody>
