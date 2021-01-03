@@ -2,7 +2,20 @@ import React from "react";
 import { TextField, Button, Container } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import TaskTable from "./task_data";
-import ModalTask from './modal';
+import Modal from '@material-ui/core/Modal';
+import { withStyles } from '@material-ui/core/styles';
+
+const useStyles = (theme) => ({
+  paper: {
+      position: 'absolute',
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3)
+  },
+});
+
 class Task extends React.Component {
   constructor(props) {
     super(props);
@@ -10,13 +23,16 @@ class Task extends React.Component {
       employee: "",
       employees: [],
       task_completed: [],
-      openModal: false
+      open: false
     }
 
     this.onChangeHandler.bind(this.onChangeHandler);
     this.onEmployeeAdd.bind(this.onEmployeeAdd);
     this.onDeleteItem.bind(this.onDeleteItem);
     this.onEditItem.bind(this.onEditItem);
+    this.handleOpen.bind(this.handleOpen);
+    this.handleClose.bind(this.handleClose);
+
 
   }
 
@@ -52,13 +68,18 @@ class Task extends React.Component {
     this.setState({openModal:true});
     let employees = [...this.state.employees];
     let completedTask = [...this.state.task_completed];
-    completedTask.push(employees[key]);
+    completedTask.push(employees[key-1]);
     let updateList = employees.filter(item => item.employeeId !== key);
 
     this.setState({
       employees: updateList,
       task_completed: completedTask
+    },()=>{
+      if(this.state.employees.length===0){
+      
+        this.handleOpen();    }
     });
+
 
 
   }
@@ -72,10 +93,36 @@ class Task extends React.Component {
     this.setState({ employees: employees })
   }
 
+  handleOpen = () => {
+    this.setState({ open: true })
+};
+
+handleClose = () => {
+    this.setState({ open: false })
+};
+
   render() {
+    const {classes} =this.props;
+    const body = (
+      <div className={classes.paper}>
+          <h2 id="simple-modal-title">TaskBar</h2>
+          <p id="simple-modal-description">
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+        </p>
+
+      </div>
+  );
     return (
       <div >
-        <ModalTask open={this.state.openModal} />
+               <Modal
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                    className="modal-body"
+                >
+                    {body}
+                </Modal>
         <div className="taskDetails">
           <div className="active">
             <p>ActiveTask</p>
@@ -111,4 +158,4 @@ class Task extends React.Component {
   }
 }
 
-export default Task;
+export default withStyles(useStyles)(Task);
