@@ -22,7 +22,9 @@ class Task extends React.Component {
       employee: "",
       employees: [],
       task_completed: [],
-      open: false
+      task_deleted:[],
+      open: false,
+      complete:0
     }
 
     this.onChangeHandler.bind(this.onChangeHandler);
@@ -31,6 +33,7 @@ class Task extends React.Component {
     this.onEditItem.bind(this.onEditItem);
     this.handleOpen.bind(this.handleOpen);
     this.handleClose.bind(this.handleClose);
+    this.markCompleted.bind(this.markCompleted);
 
 
   }
@@ -45,7 +48,7 @@ class Task extends React.Component {
     const { employee ,employees} = this.state;
     if(employees.length===0){
       this.setState({
-        task_completed:[]
+        task_deleted:[]
       })
     }
     if (employee !== '') {
@@ -71,7 +74,7 @@ class Task extends React.Component {
   onDeleteItem = (key) => {
    
     let employees = [...this.state.employees];
-    let completedTask = [...this.state.task_completed];
+    let deletedTask = [...this.state.task_deleted];
     let today = new Date();
     let h = today.getHours();
     let m = today.getMinutes();
@@ -86,19 +89,13 @@ class Task extends React.Component {
       time_completed:time_format,
     }
 
-    completedTask.push(task_update);
+    deletedTask.push(task_update);
 
     let updateList = employees.filter(item => item.employeeId !== key);
 
     this.setState({
       employees: updateList,
-      task_completed: completedTask
-    }, () => {
-      if (this.state.employees.length === 0) {
-
-        this.handleOpen();
-      
-      }
+      task_deleted: deletedTask
     });
 
 
@@ -114,12 +111,45 @@ class Task extends React.Component {
     this.setState({ employees: employees })
   }
 
+  markCompleted=(x,key)=>{
+    let employees = [...this.state.employees];
+    let completedTask = [...this.state.task_completed];
+    let today = new Date();
+    let h = today.getHours();
+    let m = today.getMinutes();
+    let s = today.getSeconds();
+
+    let time_format = `${h}:${m}:${s}`;
+    let update_index = employees.findIndex(item => item.employeeId === key);
+
+    let task_update = {
+      task_id:this.state.employees[update_index].employeeId,
+      task_name:this.state.employees[update_index].employeeName,
+      time_completed:time_format,
+    }
+   
+    completedTask.push(task_update);
+    console.log(completedTask);
+
+    let complete = this.state.complete+x;
+
+    this.setState({
+      complete:complete,
+      task_completed:completedTask
+    },()=>{
+      if(this.state.employees.length===this.state.complete){
+        this.handleOpen()
+      
+      }
+    })
+  }
+
   handleOpen = () => {
     this.setState({ open: true })
   };
 
   handleClose = () => {
-    this.setState({ open: false,task_completed:[] })
+    this.setState({ open: false,task_completed:[],complete:0 ,employees:[]})
   };
 
   render() {
@@ -183,10 +213,10 @@ class Task extends React.Component {
         <div className="taskDetails">
           <div className="active">
             <p>Active Task</p>
-            <p>{this.state.employees.length}</p>
+            <p>{this.state.employees.length-this.state.complete}</p>
           </div>
           <div className="completed"><p>Completed Task</p>
-            <p>  {this.state.task_completed.length}</p>
+            <p>  {this.state.complete}</p>
           </div>
 
         </div>
@@ -204,7 +234,7 @@ class Task extends React.Component {
         <div className="table-container">
           <Container maxWidth="md" >
 
-            < TaskTable employees_list={this.state.employees} click={this.onDeleteItem} onEdit={this.onEditItem} />
+            < TaskTable employees_list={this.state.employees} click={this.onDeleteItem} onEdit={this.onEditItem} clickMark={this.markCompleted}/>
 
 
           </Container>

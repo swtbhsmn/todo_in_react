@@ -5,12 +5,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Paper, IconButton, TextField, Modal, Button } from '@material-ui/core';
+import { Paper, IconButton, TextField, Modal, Button,FormControlLabel } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import SaveIcon from '@material-ui/icons/Save';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
+import Checkbox from '@material-ui/core/Checkbox';
 const useStyles = (theme) => ({
   paper: {
     position: 'absolute',
@@ -135,7 +136,7 @@ class TaskTable extends React.Component {
                   <TableCell align="center">Task Name</TableCell>
                   <TableCell align="center">Task Edit</TableCell>
                   <TableCell align="center">Task Delete</TableCell>
-  
+                  <TableCell align="center">Mark as Complete</TableCell>
                 </TableRow>
               </TableHead>
   
@@ -161,6 +162,12 @@ class TaskTable extends React.Component {
                     <TableCell align="center">
                       <IconButton onClick={() => this.props.click(item.employeeId)}> <DeleteOutlineIcon /></IconButton>
                     </TableCell>
+                    <TableCell align="center">
+                    <FormControlLabel
+                            control={<Checkbox color="primary" />}
+                            onClick={() => this.props.clickMark(1,item.employeeId)}
+                        />
+                        </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
