@@ -116,6 +116,7 @@ class Task extends React.Component {
   }
 
   markCompleted = (x, key) => {
+    
     let employees = [...this.state.employees];
     let completedTask = [...this.state.task_completed];
     let today = new Date();
