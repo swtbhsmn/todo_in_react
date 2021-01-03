@@ -26,6 +26,7 @@ class Task extends React.Component {
       open: false,
       complete: 0,
       active: 0,
+      task_end:false,
     }
 
     this.onChangeHandler.bind(this.onChangeHandler);
@@ -100,9 +101,14 @@ class Task extends React.Component {
       employees: updateList,
       task_deleted: deletedTask,
       active: active_task
+    },()=>{
+      if ((this.state.active=== this.state.complete)&&this.state.task_end===true) {
+        this.handleOpen()
+    
+      }
     });
 
-
+  
 
   }
 
@@ -140,7 +146,8 @@ class Task extends React.Component {
 
     this.setState({
       complete: complete,
-      task_completed: completedTask
+      task_completed: completedTask,
+      task_end:true
     }, () => {
       if (this.state.employees.length === this.state.complete) {
         this.handleOpen()
